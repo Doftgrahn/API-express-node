@@ -7,12 +7,48 @@ Servern ska ha en array med objekt enligt nedan. Alla egenskaper ska vara strän
 */
 
 const data = [
-    {searchWord: "m", language: "", translation: "", translatedLanguage: ""},
-    {searchWord: "m", language: "", translation: "", translatedLanguage: ""},
-    {searchWord: "s", language: "", translation: "", translatedLanguage: ""},
-    {searchWord: "", language: "", translation: "", translatedLanguage: ""},
-    {searchWord: "", language: "", translation: "", translatedLanguage: ""},
-    {searchWord: "", language: "", translation: "", translatedLanguage: ""}
+    {
+        searchWord: "ms",
+        language: "swedish",
+        translation: "",
+        translatedLanguage: ""
+    },
+    {
+        searchWord: "m",
+        language: "danish",
+        translation: "",
+        translatedLanguage: ""
+    },
+    {
+        searchWord: "s",
+        language: "german",
+        translation: "",
+        translatedLanguage: ""
+    },
+    {
+        searchWord: "ö",
+        language: "spanish",
+        translation: "",
+        translatedLanguage: ""
+    },
+    {
+        searchWord: "ös",
+        language: "finnish",
+        translation: "",
+        translatedLanguage: ""
+    },
+    {
+        searchWord: "Våtdräkt",
+        language: "french",
+        translation: "",
+        translatedLanguage: ""
+    },
+    {
+        searchWord: "äkta",
+        language: "norweigian",
+        translation: "",
+        translatedLanguage: ""
+    }
 ];
 
 module.exports = data;
