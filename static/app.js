@@ -22,21 +22,29 @@ window.addEventListener("load", () => {
             output.innerHTML = data.map(e => e.searchWord);
             langOutput.innerHTML = data.map(e => e.language);
         });
+    /*Key press*/
 
     searchInput.addEventListener("keypress", ({target}) => {
+        searchValue = target.value;
+        /*
         fetch(`${url}${target.value}`)
             .then(resp => resp.json())
             .then(data => (output.innerHTML = data.map(e => e.searchWord)));
+            */
     });
+    console.log(searchValue);
 
     postInput.addEventListener("keydown", ({target}) => {
         postValue = target.value;
     });
 
+    /* -- Click   */
+
     sButton.addEventListener("click", () => {
         fetch(`${url}${searchInput.value}`)
             .then(resp => resp.json())
             .then(data => (output.innerHTML = data.map(e => e.searchWord)));
+        searchInput.value = "";
     });
 
     /*POST*/
@@ -51,8 +59,9 @@ window.addEventListener("load", () => {
         })
             .then(response => response.json())
             .then(responseJSON => {
-                output.innerHTML += responseJSON.language;
+                langOutput.innerHTML += "," + responseJSON.language;
             })
             .catch(err => console.log(err));
+        postInput.value = "";
     });
 });

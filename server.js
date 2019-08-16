@@ -1,7 +1,7 @@
 /* Dependencies */
 const fs = require("fs");
 const express = require("express");
-const favicon = require("express-favicon");
+//const favicon = require("express-favicon");
 const app = express();
 /* Data */
 const wordData = require("./js/data");
@@ -9,10 +9,10 @@ const wordData = require("./js/data");
 /*-- MiddleWare----*/
 
 app.use("/static", express.static(__dirname + "/static"));
-app.use(favicon(__dirname + "/static/logo.png"));
+//app.use(favicon(__dirname + "/static/logo.png"));
 app.use(express.json());
 
-/* Get  */
+/*-- Get  --*/
 
 app.get("/", (req, res) => {
     console.log(`Server requested with with url ${req.url}`);
@@ -28,6 +28,7 @@ app.get("/style.css", (req, res) => {
     console.log(`Server requested with with url ${req.url}`);
     res.sendFile(`${__dirname}/static/style.css`);
 });
+
 app.get("/tintin.jpg", (req, res) => {
     console.log(`Server requested with with url ${req.url}`);
     res.sendFile(`${__dirname}/static/tintin.jpg`);
@@ -37,6 +38,7 @@ app.get("/logo.png", (req, res) => {
     console.log(`Server requested with with url ${req.url}`);
     res.sendFile(`${__dirname}/static/logo.png`);
 });
+
 app.get("/app.js", (req, res) => {
     console.log(`Server requested with with url ${req.url}`);
     res.sendFile(`${__dirname}/static/app.js`);
@@ -50,7 +52,9 @@ app.get("/word/:id", (req, res) => {
     const filter = wordData.filter(data =>
         data.searchWord.includes(req.params.id)
     );
-    if (!filter) return res.status(404).send("Could not find anything");
+    if (filter.length === 0)
+        return res.status(404).send("Could not find anything");
+
     res.send(filter);
 });
 
@@ -60,8 +64,10 @@ app.get("/lang/", (req, res) => {
 
 app.get("/lang/:id", (req, res) => {
     const filter = wordData.filter(data =>
-        data.language.includes(req.params.id)
+        data.language.includes(String(req.params.id))
     );
+    if (filter.length === 0)
+        return res.status(404).send("Could not find antything on that Letter.");
     res.send(filter);
 });
 
@@ -70,7 +76,7 @@ app.get("*", (req, res) => {
     res.sendFile(`${__dirname}/static/404.html`);
 });
 
-/* Post */
+/*-- Post --*/
 
 app.post("/word/", (req, res) => {
     const newWord = {
@@ -84,13 +90,13 @@ app.post("/word/", (req, res) => {
     res.send(newWord);
 });
 
-/* Delete */
+/*-- Delete --*/
 
 app.delete("/word/:id", (req, res) => {
     const filter = wordData.filter(data =>
         data.searchWord.includes(req.params.id)
     );
-    if (!filter)
+    if (filter.length === 0)
         return res.status(404).send("Word with Given letter Cannot be found.");
     const index = wordData.indexOf(filter);
     wordData.splice(index, 1);

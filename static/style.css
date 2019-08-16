@@ -1,6 +1,10 @@
 body {
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 * {
@@ -8,7 +12,7 @@ body {
 }
 
 h1 {
-    color: red;
+    color: tomato;
 }
 
 img {
@@ -25,6 +29,7 @@ img {
 .wrapper input {
     margin: 10px;
     padding: 5px;
+
 }
 
 .wrapper button {
@@ -37,6 +42,7 @@ img {
 }
 
 section {
+    margin: 0 auto;
     padding: 20px;
     display: flex;
     flex-direction: row;
@@ -45,5 +51,5 @@ section {
 section div {
     padding: 20px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
