@@ -2,26 +2,57 @@ const url = "http://localhost:1337/word/";
 
 window.addEventListener("load", () => {
     const searchInput = document.querySelector(".inputText");
+    const postInput = document.querySelector(".post");
     const output = document.querySelector(".output");
-    const sButton = document.querySelector("button");
+    const langOutput = document.querySelector(".lang_output");
+    const sButton = document.querySelector(".sButton");
+    const addButton = document.querySelector(".addButton");
+    const headers = {
+        "Content-Type": "application/json",
+        "Access-Control-Origin": "*"
+    };
 
-    /*POST*/
-
-    sButton.addEventListener("click", () => {
-        fetch(url, {
-            method: "POST",
-            body: JSON.stringify({
-                language: searchInput.value
-            })
-        }).then(response => {
-            console.log(response);
-        });
-    });
+    let searchValue;
+    let postValue;
 
     /* Get Request */
     fetch(url)
         .then(resp => resp.json())
         .then(data => {
-            output.innerHTML = data.map(e => e.language);
+            output.innerHTML = data.map(e => e.searchWord);
+            langOutput.innerHTML = data.map(e => e.language);
         });
+
+    searchInput.addEventListener("keypress", ({target}) => {
+        fetch(`${url}${target.value}`)
+            .then(resp => resp.json())
+            .then(data => (output.innerHTML = data.map(e => e.searchWord)));
+    });
+
+    postInput.addEventListener("keydown", ({target}) => {
+        postValue = target.value;
+    });
+
+    sButton.addEventListener("click", () => {
+        fetch(`${url}${searchInput.value}`)
+            .then(resp => resp.json())
+            .then(data => (output.innerHTML = data.map(e => e.searchWord)));
+    });
+
+    /*POST*/
+
+    addButton.addEventListener("click", () => {
+        fetch(url, {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify({
+                language: postInput.value
+            })
+        })
+            .then(response => response.json())
+            .then(responseJSON => {
+                output.innerHTML += responseJSON.language;
+            })
+            .catch(err => console.log(err));
+    });
 });

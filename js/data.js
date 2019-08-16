@@ -1,11 +1,3 @@
-/*
-
-Data
-Servern ska ha en array med objekt enligt nedan. Alla egenskaper ska vara strängar.
-{ searchWord, language, translation, translatedLanguage }
-
-*/
-
 const data = [
     {
         searchWord: "ms",
@@ -20,13 +12,13 @@ const data = [
         translatedLanguage: ""
     },
     {
-        searchWord: "s",
+        searchWord: "sen",
         language: "german",
         translation: "",
         translatedLanguage: ""
     },
     {
-        searchWord: "ö",
+        searchWord: "öland",
         language: "spanish",
         translation: "",
         translatedLanguage: ""
@@ -38,7 +30,7 @@ const data = [
         translatedLanguage: ""
     },
     {
-        searchWord: "Våtdräkt",
+        searchWord: "våtdräkt",
         language: "french",
         translation: "",
         translatedLanguage: ""

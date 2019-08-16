@@ -1,24 +1,45 @@
 /* Dependencies */
-
 const fs = require("fs");
 const express = require("express");
 const favicon = require("express-favicon");
-
 const app = express();
-
 /* Data */
-
 const wordData = require("./js/data");
+
+/*-- MiddleWare----*/
 
 app.use("/static", express.static(__dirname + "/static"));
 app.use(favicon(__dirname + "/static/logo.png"));
 app.use(express.json());
 
+/* Get  */
+
 app.get("/", (req, res) => {
-    fs.readFile(__dirname + "/index.html", "utf8", (err, text) => {
-        if (err) return console.log(`index.html could not be found ${err} `);
-        res.send(text);
-    });
+    console.log(`Server requested with with url ${req.url}`);
+    res.sendFile(`${__dirname}/static/index.html`);
+});
+
+app.get("/index.html", (req, res) => {
+    console.log(`Server requested with with url ${req.url}`);
+    res.sendFile(`${__dirname}/static/index.html`);
+});
+
+app.get("/style.css", (req, res) => {
+    console.log(`Server requested with with url ${req.url}`);
+    res.sendFile(`${__dirname}/static/style.css`);
+});
+app.get("/tintin.jpg", (req, res) => {
+    console.log(`Server requested with with url ${req.url}`);
+    res.sendFile(`${__dirname}/static/tintin.jpg`);
+});
+
+app.get("/logo.png", (req, res) => {
+    console.log(`Server requested with with url ${req.url}`);
+    res.sendFile(`${__dirname}/static/logo.png`);
+});
+app.get("/app.js", (req, res) => {
+    console.log(`Server requested with with url ${req.url}`);
+    res.sendFile(`${__dirname}/static/app.js`);
 });
 
 app.get("/word/", (req, res) => {
@@ -45,11 +66,11 @@ app.get("/lang/:id", (req, res) => {
 });
 
 app.get("*", (req, res) => {
-    fs.readFile(__dirname + "/static/404.html", "utf8", (err, text) => {
-        if (err) return console.log(`index.html could not be found ${err} `);
-        res.send(text);
-    });
+    console.log(`Server requested with with url ${req.url}`);
+    res.sendFile(`${__dirname}/static/404.html`);
 });
+
+/* Post */
 
 app.post("/word/", (req, res) => {
     const newWord = {
@@ -62,6 +83,8 @@ app.post("/word/", (req, res) => {
     wordData.push(newWord);
     res.send(newWord);
 });
+
+/* Delete */
 
 app.delete("/word/:id", (req, res) => {
     const filter = wordData.filter(data =>
