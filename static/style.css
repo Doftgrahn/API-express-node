@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
 body {
     margin: 0;
     padding: 0;
@@ -5,6 +7,13 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background: #41b3a3;
+    font-family: 'Open Sans', sans-serif;
+}
+
+p {
+    font-size: 18px;
+    font-weight: bold;
 }
 
 * {
@@ -12,7 +21,7 @@ body {
 }
 
 h1 {
-    color: tomato;
+    /*color: #e27d60;*/
 }
 
 img {
@@ -20,6 +29,7 @@ img {
 }
 
 .wrapper {
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -29,15 +39,15 @@ img {
 .wrapper input {
     margin: 10px;
     padding: 5px;
-
 }
 
 .wrapper button {
     margin: 10px;
+    padding: 5px;
 }
 
 .container {
-    border-bottom: 5px solid tomato;
+    border-bottom: 5px solid #e27d60;
     padding: 20px;
 }
 
@@ -45,10 +55,12 @@ section {
     margin: 0 auto;
     padding: 20px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    flex-wrap: wrap:;
 }
 
 section div {
+    width: 100%;
     padding: 20px;
     display: flex;
     flex-direction: row;

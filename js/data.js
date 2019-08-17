@@ -6,7 +6,7 @@ const data = [
         translatedLanguage: ""
     },
     {
-        searchWord: "m",
+        searchWord: "mera",
         language: "danish",
         translation: "",
         translatedLanguage: ""

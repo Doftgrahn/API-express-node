@@ -9,7 +9,6 @@ const wordData = require("./js/data");
 /*-- MiddleWare----*/
 
 app.use("/static", express.static(__dirname + "/static"));
-//app.use(favicon(__dirname + "/static/logo.png"));
 app.use(express.json());
 
 /*-- Get  --*/
@@ -52,6 +51,7 @@ app.get("/word/:id", (req, res) => {
     const filter = wordData.filter(data =>
         data.searchWord.includes(req.params.id)
     );
+
     if (filter.length === 0)
         return res.status(404).send("Could not find anything");
 
@@ -73,7 +73,7 @@ app.get("/lang/:id", (req, res) => {
 
 app.get("*", (req, res) => {
     console.log(`Server requested with with url ${req.url}`);
-    res.sendFile(`${__dirname}/static/404.html`);
+    res.status(404).sendFile(`${__dirname}/static/404.html`);
 });
 
 /*-- Post --*/
