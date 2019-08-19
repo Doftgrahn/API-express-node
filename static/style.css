@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 
+* {
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -8,7 +13,13 @@ body {
     justify-content: center;
     align-items: center;
     background: #41b3a3;
-    font-family: 'Open Sans', sans-serif;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 p {
@@ -16,16 +27,20 @@ p {
     font-weight: bold;
 }
 
-* {
-    box-sizing: border-box;
-}
-
 h1 {
     /*color: #e27d60;*/
 }
 
-img {
+.img_container {
+    display: flex;
+    margin: 0 auto;
+    position: relative;
     height: 200px;
+}
+
+img {
+    position: absolute;
+    height: 100%;
 }
 
 .wrapper {

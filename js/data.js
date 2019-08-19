@@ -6,6 +6,12 @@ const data = [
         translatedLanguage: ""
     },
     {
+        searchWord: "fiskar",
+        language: "swedish",
+        translation: "",
+        translatedLanguage: ""
+    },
+    {
         searchWord: "mera",
         language: "danish",
         translation: "",
