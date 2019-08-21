@@ -5,10 +5,10 @@ const app = express();
 
 /* Data */
 
-const wordData = require("./js/data");
+const wordData = require("./data/data");
 
 /* Magic Variables */
-const staticPath = `${__dirname}/static`;
+const staticPath = `${__dirname}/public`;
 
 /*-- MiddleWare----*/
 
