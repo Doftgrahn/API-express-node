@@ -12,60 +12,32 @@ const staticPath = `${__dirname}/static`;
 
 /*-- MiddleWare----*/
 
-const logger = (req, res, next) => {
-    console.log(`Server recieved URL with adress ${req.url}`);
-    console.log(`Server recieved URL with TYPE ${req.method}`);
+const allowCrossDomain = (req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "*");
+    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
     next();
 };
-
-app.use(logger);
+app.use(allowCrossDomain);
 
 app.use(express.json());
-
 app.use(express.static(staticPath));
 
 /*--
  Get
  --*/
-/*
-app.get("/", (req, res) => {
-    res.sendFile(`${staticPath}/index.html`);
-});
-
-app.get("/index.html", (req, res) => {
-    res.sendFile(`${staticPath}/index.html`);
-});
-
-app.get("/500.html", (req, res) => {
-    res.sendFile(`${staticPath}/500.html`);
-});
-
-app.get("/style.css", (req, res) => {
-    res.sendFile(`${staticPath}/style.css`);
-});
-
-app.get("/tintin.jpg", (req, res) => {
-    res.sendFile(`${staticPath}/tintin.jpg`);
-});
-
-app.get("/logo.png", (req, res) => {
-    res.sendFile(`${staticPath}/logo.png`);
-});
-
-app.get("/app.js", (req, res) => {
-    res.sendFile(`${staticPath}/app.js`);
-});
-*/
 
 app.get("/word/", (req, res) => {
-    const data = wordData.map(e => e.searchWord);
+    const data = wordData.map(e => e.searchWord.toUpperCase());
     res.send(data);
 });
 
 app.get("/word/:id", (req, res, next) => {
     const wordID = req.params.id;
-    const filter = wordData.filter(data => data.searchWord.includes(wordID));
-    if (!req.params.id || filter.length === 0)
+    const filter = wordData.filter(data =>
+        data.searchWord.toUpperCase().includes(wordID.toUpperCase())
+    );
+    if (filter.length === 0)
         return res.status(404).send("Could not find anything");
     res.send(filter);
 });
@@ -76,7 +48,9 @@ app.get("/lang/", (req, res) => {
 
 app.get("/lang/:id", (req, res) => {
     const filter = wordData
-        .filter(data => data.language.includes(req.params.id))
+        .filter(data =>
+            data.language.toUpperCase().includes(req.params.id.toUpperCase())
+        )
         .map(e => e.searchWord);
     if (filter.length === 0)
         return res.status(404).send("Could not find antything on that Letter.");
@@ -111,12 +85,12 @@ app.delete("/word/:id", (req, res) => {
     const filter = wordData.filter(data =>
         data.searchWord.includes(req.params.id)
     );
-    const finalFilter = wordData.filter(e => !filter.includes(e));
+    const finalFilter = wordData
+        .filter(e => !filter.includes(e))
+        .map(e => e.searchWord);
 
     if (filter.length === 0)
         return res.status(404).sendFile(`${staticPath}/404.html`);
-    //const deleteStuff = wordData.filter(item => !item.includes(req.params.id));
-    //console.log('Delete STUFF', deleteStuff);
     res.status(200).send(finalFilter);
 });
 
@@ -124,28 +98,16 @@ app.delete("/word/:id", (req, res) => {
 Errror handling
   --*/
 
-app.get("/error", (error, req, res, next) => {
-    console.log("lol");
-    throw new Error("lolol");
-});
-
 app.use((err, req, res, next) => {
     console.error(`404 error : ${err}`);
-    res.status(404).send("404: file not found");
-    //next();
-});
-
-app.use((err, req, res, next) => {
-    console.error(`some stuff 500 : ${err}`);
-    res.status(500).send("Turn of your computer, youre in bad luck");
+    res.status(404).sendFile(`${staticPath}/404.html`);
     next();
 });
 
 app.use((err, req, res, next) => {
-    res.locals.message = err.message;
-    res.locals.error = req.app.get("env") === "development" ? err : {};
-    res.status(err.status || 500);
-    res.render("Error Stuff");
+    console.error(`some stuff 500 : ${err}`);
+    res.status(500).sendFile(`${staticPath}/500.html`);
+    next();
 });
 
 /*-- Listening  --*/
