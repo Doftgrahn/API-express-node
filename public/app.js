@@ -77,7 +77,7 @@ window.addEventListener("load", () => {
             })
                 .then(response => response.json())
                 .then(resJSON => {
-                    output.innerHTML = resJSON.map(data => data);
+                    output.innerHTML = resJSON.map(data => data.searchWord);
                 })
                 .catch(err => console.log("Something went wrong", err));
         deleteInput = "";

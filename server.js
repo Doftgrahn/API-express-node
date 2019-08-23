@@ -21,6 +21,7 @@ const allowCrossDomain = (req, res, next) => {
 app.use(allowCrossDomain);
 
 app.use(express.json());
+
 app.use(express.static(staticPath));
 
 /*--
@@ -28,15 +29,13 @@ app.use(express.static(staticPath));
  --*/
 
 app.get("/word/", (req, res) => {
-    const data = wordData.map(e => e.searchWord.toUpperCase());
+    const data = wordData.map(e => e.searchWord);
     res.send(data);
 });
 
 app.get("/word/:id", (req, res, next) => {
     const wordID = req.params.id;
-    const filter = wordData.filter(data =>
-        data.searchWord.toUpperCase().includes(wordID.toUpperCase())
-    );
+    const filter = wordData.filter(data => data.searchWord.includes(wordID));
     if (filter.length === 0)
         return res.status(404).send("Could not find anything");
     res.send(filter);
@@ -48,9 +47,7 @@ app.get("/lang/", (req, res) => {
 
 app.get("/lang/:id", (req, res) => {
     const filter = wordData
-        .filter(data =>
-            data.language.toUpperCase().includes(req.params.id.toUpperCase())
-        )
+        .filter(data => data.language.includes(req.params.id))
         .map(e => e.searchWord);
     if (filter.length === 0)
         return res.status(404).send("Could not find antything on that Letter.");
@@ -82,12 +79,13 @@ app.post("/word/", (req, res) => {
 /*-- Delete --*/
 
 app.delete("/word/:id", (req, res) => {
-    const filter = wordData.filter(data =>
-        data.searchWord.includes(req.params.id)
+    const filter = wordData.filter(
+        data => !data.searchWord.includes(req.params.id)
     );
-    const finalFilter = wordData
-        .filter(e => !filter.includes(e))
-        .map(e => e.searchWord);
+
+    const finalFilter = wordData.filter(e => filter.includes(e));
+
+    console.log(finalFilter);
 
     if (filter.length === 0)
         return res.status(404).sendFile(`${staticPath}/404.html`);
