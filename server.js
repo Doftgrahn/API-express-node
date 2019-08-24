@@ -79,17 +79,22 @@ app.post("/word/", (req, res) => {
 /*-- Delete --*/
 
 app.delete("/word/:id", (req, res) => {
-    const filter = wordData.filter(
-        data => !data.searchWord.includes(req.params.id)
+    const filter = wordData.filter(data =>
+        data.searchWord.includes(req.params.id)
     );
 
-    const finalFilter = wordData.filter(e => filter.includes(e));
-
-    console.log(finalFilter);
+    const finalDelete = filter.forEach(f =>
+        wordData.splice(
+            wordData.findIndex(e => e.searchWord === f.searchWord),
+            1
+        )
+    );
+    console.log(wordData);
 
     if (filter.length === 0)
         return res.status(404).sendFile(`${staticPath}/404.html`);
-    res.status(200).send(finalFilter);
+
+    res.status(200).send(finalDelete);
 });
 
 /* --

@@ -69,16 +69,14 @@ window.addEventListener("load", () => {
 
     deleteBtn.addEventListener("click", () => {
         let deleteInput = document.querySelector(".delete").value;
+        let stringify = JSON.stringify(deleteInput);
 
         if (deleteInput)
             fetch(`${url}${deleteInput}`, {
                 method: "DELETE",
                 headers: headers
             })
-                .then(response => response.json())
-                .then(resJSON => {
-                    output.innerHTML = resJSON.map(data => data.searchWord);
-                })
+                .then(response => console.log("Removed"))
                 .catch(err => console.log("Something went wrong", err));
         deleteInput = "";
     });

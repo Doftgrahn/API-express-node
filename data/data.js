@@ -1,3 +1,6 @@
+
+
+
 const data = [
     {
         searchWord: "ms",
@@ -48,5 +51,6 @@ const data = [
         translatedLanguage: ""
     }
 ];
+
 
     module.exports = data;
