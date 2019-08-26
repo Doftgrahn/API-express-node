@@ -31,11 +31,13 @@ app.use(express.static(staticPath));
 app.get("/word/", (req, res) => {
     const query = req.query.sw;
     if (query) {
-        const filter = wordData.filter(data => data.searchWord.includes(query));
+        const filter = wordData
+            .filter(data => data.searchWord.includes(query))
+            .map(e => e.searchWord);
         return res.send(filter);
     }
     const data = wordData.map(e => e.searchWord);
-    return res.send(data);
+    res.send(data);
 });
 
 app.get("/lang/", (req, res) => {

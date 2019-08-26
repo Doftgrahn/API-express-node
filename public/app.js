@@ -42,10 +42,10 @@ window.addEventListener("load", () => {
     sButton.addEventListener("click", () => {
         let searchInput = document.querySelector(".inputText").value;
 
-        fetch(`${url}?sw=${searchInput}`)
+        fetch(`${url}?sw=${s             v  earchInput}`)
             .then(resp => resp.json())
             .then(data => {
-                let myData = data.map(e => e.searchWord);
+                let myData = data.map(e => e);
                 output.innerHTML = myData;
             });
     });
