@@ -1,5 +1,8 @@
-const url = "http://localhost:1337/word/";
-const url2 = "http://localhost:1337/lang/";
+const port = 8000;
+const url = `http://localhost:${port}/word/`;
+const url2 = `http://localhost:${port}/lang/`;
+
+//const url2 = "http://localhost:1337/lang/";
 
 //const url = "http://backend-5bbf5.firebaseapp.com/word/";
 //const url2 = "http://backend-5bbf5.firebaseapp.com/lang/";
@@ -38,25 +41,34 @@ window.addEventListener("load", () => {
 
     sButton.addEventListener("click", () => {
         let searchInput = document.querySelector(".inputText").value;
-        fetch(`${url}${searchInput}`)
+
+        fetch(`${url}?sw=${searchInput}`)
             .then(resp => resp.json())
-            .then(data => (output.innerHTML = data.map(e => e.searchWord)));
-        searchInput = "";
+            .then(data => {
+                let myData = data.map(e => e.searchWord);
+                output.innerHTML = myData;
+            });
     });
 
     /* POST */
 
     addButton.addEventListener("click", () => {
-        let postInput = document.querySelector(".post").value;
+        let searchInput = document.querySelector(".post").value;
+        let languageInput = document.querySelector(".languageInput").value;
+        let translationInput = document.querySelector(".translationInput")
+            .value;
+        let translatedLanguageInput = document.querySelector(
+            ".translatedLanguageInput"
+        ).value;
 
         fetch(url, {
             method: "POST",
             headers: headers,
             body: JSON.stringify({
-                searchWord: postInput,
-                language: "",
-                translation: "",
-                translatedLanguage: ""
+                searchWord: searchInput,
+                language: languageInput,
+                translation: translationInput,
+                translatedLanguage: translatedLanguageInput
             })
         })
             .then(response => response.json())
@@ -64,7 +76,7 @@ window.addEventListener("load", () => {
                 output.innerHTML += "," + responseJSON.searchWord;
             })
             .catch(err => console.log(err));
-        postInput = "";
+        searchInput = "";
     });
 
     deleteBtn.addEventListener("click", () => {
@@ -72,7 +84,7 @@ window.addEventListener("load", () => {
         let stringify = JSON.stringify(deleteInput);
 
         if (deleteInput)
-            fetch(`${url}${deleteInput}`, {
+            fetch(`${url}?sw=${deleteInput}`, {
                 method: "DELETE",
                 headers: headers
             })

@@ -29,16 +29,13 @@ app.use(express.static(staticPath));
  --*/
 
 app.get("/word/", (req, res) => {
+    const query = req.query.sw;
+    if (query) {
+        const filter = wordData.filter(data => data.searchWord.includes(query));
+        return res.send(filter);
+    }
     const data = wordData.map(e => e.searchWord);
-    res.send(data);
-});
-
-app.get("/word/:id", (req, res, next) => {
-    const wordID = req.params.id;
-    const filter = wordData.filter(data => data.searchWord.includes(wordID));
-    if (filter.length === 0)
-        return res.status(404).send("Could not find anything");
-    res.send(filter);
+    return res.send(data);
 });
 
 app.get("/lang/", (req, res) => {
@@ -50,7 +47,7 @@ app.get("/lang/:id", (req, res) => {
         .filter(data => data.language.includes(req.params.id))
         .map(e => e.searchWord);
     if (filter.length === 0)
-        return res.status(404).send("Could not find antything on that Letter.");
+        return res.send("Could not find antything on that letter.");
     res.send(filter);
 });
 
@@ -63,7 +60,7 @@ app.get("*", (req, res) => {
 
 app.post("/word/", (req, res) => {
     if (!req.body.searchWord || req.body.searchWord.length < 2)
-        return res.status(400).send("You mothafackas");
+        return res.status(400).send("Not a valid word to post");
 
     const newWord = {
         searchWord: req.body.searchWord,
@@ -78,44 +75,39 @@ app.post("/word/", (req, res) => {
 
 /*-- Delete --*/
 
-app.delete("/word/:id", (req, res) => {
-    const filter = wordData.filter(data =>
-        data.searchWord.includes(req.params.id)
-    );
+app.delete("/word/", (req, res) => {
+    const query = req.query.sw;
+    if (query) {
+        const filter = wordData.filter(data => data.searchWord.includes(query));
 
-    const finalDelete = filter.forEach(f =>
-        wordData.splice(
-            wordData.findIndex(e => e.searchWord === f.searchWord),
-            1
-        )
-    );
-    console.log(wordData);
-
-    if (filter.length === 0)
-        return res.status(404).sendFile(`${staticPath}/404.html`);
-
-    res.status(200).send(finalDelete);
+        const finalDelete = filter.forEach(f =>
+            wordData.splice(
+                wordData.findIndex(e => e.searchWord === f.searchWord),
+                1
+            )
+        );
+        res.status(200).send(finalDelete);
+    }
 });
 
 /* --
 Errror handling
   --*/
 
-app.use((err, req, res, next) => {
-    console.error(`404 error : ${err}`);
+app.all("*", (req, res) => {
+    //console.error(`404 error : ${err}`);
     res.status(404).sendFile(`${staticPath}/404.html`);
-    next();
 });
 
 app.use((err, req, res, next) => {
     console.error(`some stuff 500 : ${err}`);
-    res.status(500).sendFile(`${staticPath}/500.html`);
+    res.status(500).sendFile(`${__dirname}/500.html`);
     next();
 });
 
 /*-- Listening  --*/
 
-const port = process.env.port || 1337;
+const port = process.env.port || 8000;
 
 app.listen(port, () => console.log(`App listening to port ${port}`));
 

@@ -11,8 +11,8 @@ const data = [
     {
         searchWord: "fiskar",
         language: "swedish",
-        translation: "",
-        translatedLanguage: ""
+        translation: "fish",
+        translatedLanguage: "english"
     },
     {
         searchWord: "mera",
